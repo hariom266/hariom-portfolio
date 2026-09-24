@@ -1,0 +1,16 @@
+#certifications .cert-grid{grid-template-columns:repeat(3,minmax(0,1fr))}aws-certifications{display:contents}
+#certifications .aws-flip-card{padding:0;min-height:330px;perspective:1100px;background:transparent;border:0;cursor:pointer;outline-offset:5px}
+.certificate-inner{display:grid;min-height:330px;height:100%;transform-style:preserve-3d;transition:transform .7s ease}
+.aws-flip-card.is-flipped .certificate-inner{transform:rotateY(180deg)}
+.certificate-front,.certificate-back{grid-area:1/1;padding:25px;border:1px solid #294652;border-radius:7px;background:linear-gradient(150deg,#142530,#0e151f);backface-visibility:hidden;-webkit-backface-visibility:hidden;min-width:0}
+.certificate-front{transform:rotateY(0deg)}.certificate-back{transform:rotateY(180deg);display:flex;flex-direction:column;align-items:flex-start;gap:12px}
+.certificate-thumb{width:100%;aspect-ratio:800/566;object-fit:contain;background:#0b121c;border-radius:4px}
+#certifications .certificate-caption{font-size:14px;line-height:1.5;color:#dbe5f1;margin:0}
+#certifications .certificate-view{margin:0;text-decoration:underline;text-underline-offset:4px;font-size:14px}
+.certificate-hint{display:block;margin-top:22px;color:var(--accent);font-size:12px}.certificate-date{font-size:13px}
+.certificate-dialog{position:fixed;inset:0;margin:auto;width:min(1000px,94vw);max-height:94dvh;padding:0;border:1px solid #416477;border-radius:12px;background:#0e1722;color:#edf1f7;overflow:auto}
+.certificate-dialog::backdrop{background:#02070de8;backdrop-filter:blur(4px)}
+.certificate-modal-panel{padding:24px}.certificate-modal-panel h3{padding-right:90px;margin-bottom:20px;font-size:18px;line-height:1.5}.certificate-close{float:right;border:1px solid #416477;border-radius:5px;padding:7px 12px;background:#152635;color:#edf1f7;cursor:pointer}.certificate-full{width:100%;max-height:75dvh;object-fit:contain;display:block}
+@media(max-width:1000px){#certifications .cert-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:600px){#certifications .cert-grid{grid-template-columns:1fr}.certificate-front,.certificate-back{padding:23px}.certificate-modal-panel{padding:16px}}
+@media(prefers-reduced-motion:reduce){.certificate-inner,.aws-flip-card.is-flipped .certificate-inner,.certificate-front,.certificate-back{transform:none!important}.certificate-front,.certificate-back{transition:opacity .15s ease!important;backface-visibility:visible}.certificate-back{opacity:0;pointer-events:none}.aws-flip-card.is-flipped .certificate-front{opacity:0;pointer-events:none}.aws-flip-card.is-flipped .certificate-back{opacity:1;pointer-events:auto}}
