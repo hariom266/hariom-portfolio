@@ -38,14 +38,15 @@ export const certifications = [
   },
   {
     "id": "red-hat-linux-fundamentals",
-    "name": "Red Hat Linux Fundamentals",
+    "name": "Red Hat Training: Getting Started with Linux Fundamentals (RH104 - RHA) - Ver. 9.1",
     "issuer": "Red Hat",
-    "date": "",
-    "credentialUrl": "",
+    "date": "May 2, 2025",
+    "credentialUrl": "https://www.credly.com/go/OlihiXFM",
     "description": "Linux fundamentals and operating system skills.",
-    "file": "",
+    "file": "./assets/certificates/red-hat-linux-fundamentals.pdf",
     "credentialId": "",
-    "category": ""
+    "category": "Course Attendance",
+    "thumbnail": "./assets/certificates/red-hat-linux-fundamentals-preview.png"
   },
   {
     "id": "javascript-essentials",
