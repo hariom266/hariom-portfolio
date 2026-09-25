@@ -26,14 +26,15 @@ export const certifications = [
   },
   {
     "id": "aws-developer-associate",
-    "name": "AWS Certified Developer – Associate",
+    "name": "AWS Certified Developer - Associate",
     "issuer": "AWS",
-    "date": "",
-    "credentialUrl": "",
+    "date": "June 24, 2026",
+    "credentialUrl": "https://aws.amazon.com/verification",
     "description": "Developing and maintaining applications on AWS.",
-    "file": "",
-    "credentialId": "",
-    "category": ""
+    "file": "./assets/certificates/aws-developer-associate.pdf",
+    "credentialId": "5806a306456e42ee984f57ed8e33b326",
+    "category": "",
+    "thumbnail": "./assets/certificates/aws-developer-associate-preview.png"
   },
   {
     "id": "red-hat-linux-fundamentals",
