@@ -32,3 +32,6 @@ The uploader accepts original PDF/JPG/PNG/WebP up to 5 MiB and preserves bytes w
 ## Validation
 
 Run npm install, npm run build and npm test. There are no dependencies. This is already a compiled static export: build validates JS syntax, relative imports, referenced assets and all nonempty certificate paths/types rather than rebundling the older React project. Original-file browser verification remains pending until real files are supplied.
+
+
+Certificate viewing policy: the Cloud Practitioner and AI Practitioner certificates have real previews rendered from their unchanged PDFs. View Certificate opens these previews in the lightbox. Certificate download and open-original buttons were removed at the owner’s request. Public images/PDF URLs, GitHub files, browser saving and screenshots cannot be made copy-proof.

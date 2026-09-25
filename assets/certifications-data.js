@@ -16,12 +16,13 @@ export const certifications = [
     "id": "aws-ai-practitioner",
     "name": "AWS Certified AI Practitioner",
     "issuer": "AWS",
-    "date": "",
-    "credentialUrl": "",
+    "date": "May 11, 2026",
+    "credentialUrl": "https://aws.amazon.com/verification",
     "description": "Artificial intelligence, machine learning and generative AI foundations.",
-    "file": "",
-    "credentialId": "",
-    "category": ""
+    "file": "./assets/certificates/aws-ai-practitioner.pdf",
+    "credentialId": "c27e7311377647e7875080e0d2038125",
+    "category": "",
+    "thumbnail": "./assets/certificates/aws-ai-practitioner-preview.png"
   },
   {
     "id": "aws-developer-associate",
