@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {parseData, serializeData, prepareData, imageType, publishCertificate, toBase64} from '../admin/github.js';
-const original = [{id:'cloud',name:'Cloud – 云',issuer:'AWS',date:'',image:'./assets/certificates/old.svg',description:'Keep me'}];
+const original = [{id:'cloud',name:'Cloud – 云',issuer:'AWS',date:'',file:'./assets/certificates/old.pdf',description:'Keep me'}];
 const image = new Uint8Array([255,216,255,0]);
 test('JSON data round trips Unicode without executing JavaScript', () => {
   assert.deepEqual(parseData(serializeData(original)),original);
@@ -35,7 +35,7 @@ test('publishes image and metadata in one tree and non-forced branch update', as
   assert.equal(result.sha,'new-commit'); assert.equal(m.calls.length,7);
   assert.ok(m.calls[2].url.endsWith('?ref=head'));
   assert.equal(m.calls[4].body.base_tree,'base-tree'); assert.equal(m.calls[4].body.tree.length,2);
-  assert.equal(parseData(m.calls[4].body.tree[1].content)[0].image,'./'+result.path);
+  assert.equal(parseData(m.calls[4].body.tree[1].content)[0].file,'./'+result.path);
   assert.deepEqual(m.calls[5].body.parents,['head']); assert.deepEqual(m.calls[6].body,{sha:'new-commit',force:false});
 });
 test('concurrent branch change stops with useful message and no forced retry', async () => {
@@ -43,4 +43,21 @@ test('concurrent branch change stops with useful message and no forced retry', a
 });
 test('expired token stops before attempting any writes', async () => {
   let count=0; await assert.rejects(publishCertificate(payload,async()=>{count++;return {ok:false,status:401};}),/expired/); assert.equal(count,1);
+});
+import {certificateFile,verificationUrl} from '../assets/certificate-utils.js';
+test('supports original PDFs/images and rejects unsafe file or credential URLs',()=>{
+ assert.equal(certificateFile('./assets/certificates/cert.pdf').pdf,true);
+ assert.equal(certificateFile('./assets/certificates/cert.jpg').pdf,false);
+ assert.equal(certificateFile(''),null);
+ assert.equal(certificateFile('./assets/certificates/../private.pdf'),null);
+ assert.equal(certificateFile('./assets/certificates/fake.svg'),null);
+ assert.equal(verificationUrl('javascript:alert(1)'),'');
+ assert.equal(verificationUrl(''),'');
+});
+test('PDF upload preserves original bytes and allows unknown metadata to remain empty',async()=>{
+ const pdf=new TextEncoder().encode('%PDF-1.7\nunit-test bytes only');
+ const m=mock(); const result=await publishCertificate({...payload,image:pdf,mime:'application/pdf',metadata:{id:'cloud',name:'Cloud',issuer:'',date:'',credentialId:'',credentialUrl:'',category:''}},m.request);
+ assert.ok(result.path.endsWith('.pdf'));
+ assert.equal(m.calls[3].body.content,toBase64(pdf));
+ const entry=parseData(m.calls[4].body.tree[1].content)[0];assert.equal(entry.issuer,'');assert.equal(entry.credentialId,'');assert.equal(entry.file,'./'+result.path);
 });

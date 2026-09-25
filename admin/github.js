@@ -1,3 +1,4 @@
+import { verificationUrl } from '../assets/certificate-utils.js';
 export const REPO = 'hariom266/hariom-portfolio';
 export const DATA_PATH = 'assets/certifications-data.js';
 const PREFIX = '// Certificate data. Keep this module as a JSON array export for the admin uploader.\nexport const certifications = ';
@@ -6,7 +7,7 @@ export function parseData(source) {
   const match = source.match(/^\/\/[^\n]*\nexport const certifications = (\[[\s\S]*\]);\s*$/);
   if (!match) throw new Error('The certification data format has changed. No changes were published. Update this uploader before retrying.');
   const data = JSON.parse(match[1]);
-  if (!Array.isArray(data) || data.some(c => !c || typeof c.id !== 'string' || typeof c.name !== 'string' || typeof c.image !== 'string') || new Set(data.map(c => c.id)).size !== data.length) throw new Error('Invalid or duplicate certification data. No changes were published.');
+  if (!Array.isArray(data) || data.some(c => !c || typeof c.id !== 'string' || typeof c.name !== 'string' || typeof (c.file ?? c.image) !== 'string') || new Set(data.map(c => c.id)).size !== data.length) throw new Error('Invalid or duplicate certification data. No changes were published.');
   return data;
 }
 export function toBase64(bytes) {
@@ -16,18 +17,22 @@ export function toBase64(bytes) {
 }
 export function decodeText(base64) { return new TextDecoder('utf-8', {fatal:true}).decode(Uint8Array.from(atob(base64.replace(/\s/g, '')), c => c.charCodeAt(0))); }
 export function imageType(bytes) {
+  if (String.fromCharCode(...bytes.slice(0,5)) === '%PDF-') return 'application/pdf';
   if (bytes[0] === 255 && bytes[1] === 216 && bytes[2] === 255) return 'image/jpeg';
   if ([137,80,78,71,13,10,26,10].every((n,i) => bytes[i] === n)) return 'image/png';
   if (String.fromCharCode(...bytes.slice(0,4)) === 'RIFF' && String.fromCharCode(...bytes.slice(8,12)) === 'WEBP') return 'image/webp';
   return '';
 }
-export function prepareData(items, {id, name, issuer, date}, path, newId) {
+export function prepareData(items, {id, name, issuer = '', date = '', credentialId = '', credentialUrl = '', category = ''}, path, newId) {
   name = name.trim(); issuer = issuer.trim();
-  if (!name || name.length > 160 || !issuer || issuer.length > 100 || (date && !/^\d{4}-\d{2}-\d{2}$/.test(date))) throw new Error('Please enter a valid name, issuer and optional date.');
+  if (!name || name.length > 160 || issuer.length > 100 || date.length > 40 || credentialId.length > 200 || category.length > 100) throw new Error('Please enter a valid name, issuer and optional date.');
+  if (credentialUrl && !verificationUrl(credentialUrl)) throw new Error('Use a valid HTTPS credential verification URL or leave it blank.');
   const index = id ? items.findIndex(c => c.id === id) : -1;
   if (id && index < 0) throw new Error('This certificate was removed on GitHub. Reload the page before retrying.');
   if (!id && items.some(c => c.name.toLowerCase() === name.toLowerCase())) throw new Error('This certification already exists. Select it under Add or replace.');
-  const entry = {...(index >= 0 ? items[index] : {id:newId, description:'', credentialUrl:''}), name, issuer, date, image:'./'+path};
+  const entry = {...(index >= 0 ? items[index] : {id:newId, description:'', credentialUrl:''}), name, issuer, date, credentialId:credentialId.trim(), credentialUrl:credentialUrl.trim(), category:category.trim(), file:'./'+path};
+  delete entry.image;
+  delete entry.thumbnail; // A replacement must not retain a preview of the old certificate.
   const updated = [...items];
   if (index >= 0) updated[index] = entry; else updated.push(entry);
   return updated;
@@ -50,8 +55,8 @@ export async function publishCertificate({token, metadata, image, mime}, request
   const data = parseData(decodeText(file.content));
   const suffix = crypto.randomUUID();
   const slug = metadata.name.toLowerCase().normalize('NFKD').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'').slice(0,75) || 'certificate';
-  const extension = {'image/webp':'webp','image/png':'png','image/jpeg':'jpg'}[mime];
-  if (!extension || image.length > 5*1024*1024 || imageType(image) !== mime) throw new Error('Invalid image type or size. Choose a JPG, PNG or WebP under 5 MiB.');
+  const extension = {'application/pdf':'pdf','image/webp':'webp','image/png':'png','image/jpeg':'jpg'}[mime];
+  if (!extension || image.length > 5*1024*1024 || imageType(image) !== mime) throw new Error('Invalid image type or size. Choose a PDF, JPG, PNG or WebP under 5 MiB.');
   const path = `assets/certificates/${slug}-${suffix}.${extension}`;
   const updated = prepareData(data, metadata, path, slug+'-'+suffix);
   const blob = await api('git/blobs','POST',{content:toBase64(image),encoding:'base64'});

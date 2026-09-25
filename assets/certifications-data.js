@@ -4,90 +4,111 @@ export const certifications = [
     "id": "aws-cloud-practitioner",
     "name": "AWS Certified Cloud Practitioner",
     "issuer": "AWS",
-    "date": "",
-    "image": "./assets/certificates/aws-cloud-practitioner.svg",
-    "credentialUrl": "",
-    "description": "Cloud concepts, core AWS services and cloud fundamentals."
+    "date": "May 5, 2026",
+    "credentialUrl": "https://aws.amazon.com/verification",
+    "description": "Cloud concepts, core AWS services and cloud fundamentals.",
+    "file": "./assets/certificates/aws-cloud-practitioner.pdf",
+    "credentialId": "b3573690086c4bbf95c81a360f9dbd8d",
+    "category": "",
+    "thumbnail": "./assets/certificates/aws-cloud-practitioner-preview.png"
   },
   {
     "id": "aws-ai-practitioner",
     "name": "AWS Certified AI Practitioner",
     "issuer": "AWS",
     "date": "",
-    "image": "./assets/certificates/aws-ai-practitioner.svg",
     "credentialUrl": "",
-    "description": "Artificial intelligence, machine learning and generative AI foundations."
+    "description": "Artificial intelligence, machine learning and generative AI foundations.",
+    "file": "",
+    "credentialId": "",
+    "category": ""
   },
   {
     "id": "aws-developer-associate",
     "name": "AWS Certified Developer – Associate",
     "issuer": "AWS",
     "date": "",
-    "image": "./assets/certificates/aws-developer-associate.svg",
     "credentialUrl": "",
-    "description": "Developing and maintaining applications on AWS."
+    "description": "Developing and maintaining applications on AWS.",
+    "file": "",
+    "credentialId": "",
+    "category": ""
   },
   {
     "id": "red-hat-linux-fundamentals",
     "name": "Red Hat Linux Fundamentals",
     "issuer": "Red Hat",
     "date": "",
-    "image": "./assets/certificates/certificate-placeholder.svg",
     "credentialUrl": "",
-    "description": "Linux fundamentals and operating system skills."
+    "description": "Linux fundamentals and operating system skills.",
+    "file": "",
+    "credentialId": "",
+    "category": ""
   },
   {
     "id": "javascript-essentials",
     "name": "JavaScript Essentials",
     "issuer": "",
     "date": "",
-    "image": "./assets/certificates/certificate-placeholder.svg",
     "credentialUrl": "",
-    "description": "Core JavaScript concepts and programming foundations."
+    "description": "Core JavaScript concepts and programming foundations.",
+    "file": "",
+    "credentialId": "",
+    "category": ""
   },
   {
     "id": "operating-system-certification",
     "name": "Operating System Certification",
     "issuer": "",
     "date": "",
-    "image": "./assets/certificates/certificate-placeholder.svg",
     "credentialUrl": "",
-    "description": "Operating system concepts and fundamentals."
+    "description": "Operating system concepts and fundamentals.",
+    "file": "",
+    "credentialId": "",
+    "category": ""
   },
   {
     "id": "cisco-javascript-related-certification",
     "name": "Cisco JavaScript / related certification",
     "issuer": "Cisco",
     "date": "",
-    "image": "./assets/certificates/certificate-placeholder.svg",
     "credentialUrl": "",
-    "description": "JavaScript and related programming concepts."
+    "description": "JavaScript and related programming concepts.",
+    "file": "",
+    "credentialId": "",
+    "category": ""
   },
   {
     "id": "cisco-data-analyst-engineer",
     "name": "Cisco Data Analyst Engineer",
     "issuer": "Cisco",
     "date": "",
-    "image": "./assets/certificates/certificate-placeholder.svg",
     "credentialUrl": "",
-    "description": "Data analysis concepts and skills."
+    "description": "Data analysis concepts and skills.",
+    "file": "",
+    "credentialId": "",
+    "category": ""
   },
   {
     "id": "oracle-ai-database-oracle-related-certification",
     "name": "Oracle AI Database / Oracle-related certification",
     "issuer": "Oracle",
     "date": "",
-    "image": "./assets/certificates/certificate-placeholder.svg",
     "credentialUrl": "",
-    "description": "Oracle database and AI-related learning."
+    "description": "Oracle database and AI-related learning.",
+    "file": "",
+    "credentialId": "",
+    "category": ""
   },
   {
     "id": "data-science-certification",
     "name": "Data Science Certification",
     "issuer": "",
     "date": "",
-    "image": "./assets/certificates/certificate-placeholder.svg",
     "credentialUrl": "",
-    "description": "Data science concepts and foundations."
+    "description": "Data science concepts and foundations.",
+    "file": "",
+    "credentialId": "",
+    "category": ""
   }
 ];

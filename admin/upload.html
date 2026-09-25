@@ -16,7 +16,7 @@
   <a href="../#certifications">← Back to portfolio</a>
   <p class="eyebrow">PORTFOLIO / CERTIFICATES</p>
   <h1>Upload a certificate</h1>
-  <p>Publish an image and its details to <strong>hariom266/hariom-portfolio</strong> on main. Vercel deploys the commit when Git auto-deployment is connected.</p>
+  <p>Publish an original certificate and its details to <strong>hariom266/hariom-portfolio</strong> on main. Vercel deploys the commit when Git auto-deployment is connected.</p>
   <aside class="notice">This is a personal convenience lock, not bank-grade security. The password is checked only in this browser and can be bypassed. Your GitHub token—not this page or password—controls who can publish. Uploaded certificates become public.</aside>
   <section id="gate" class="admin-panel">
     <h2 id="gate-title">Unlock this browser</h2>
@@ -44,12 +44,16 @@
       <label for="name">Certification name</label>
       <input id="name" maxlength="160" required>
       <div class="fields">
-        <div><label for="issuer">Issuer</label><input id="issuer" value="AWS" maxlength="100" required></div>
-        <div><label for="date">Issue date (optional)</label><input id="date" type="date"></div>
+        <div><label for="issuer">Issuer</label><input id="issuer" maxlength="100"></div>
+        <div><label for="date">Issue date (optional)</label><input id="date" maxlength="40" placeholder="As printed on the certificate"></div>
       </div>
-      <label for="image">Certificate image</label>
-      <input id="image" type="file" accept="image/jpeg,image/png,image/webp,.jpg,.jpeg,.png,.webp" required>
-      <p class="help">JPG, PNG or WebP, up to 5 MiB. Large images are resized to a maximum of 2400 pixels and converted to WebP before upload.</p>
+      <label for="credentialId">Credential ID (optional)</label><input id="credentialId" maxlength="200">
+      <label for="credentialUrl">Verification URL (optional)</label><input id="credentialUrl" type="url" placeholder="https://" maxlength="2048">
+      <label for="category">Category (optional)</label><input id="category" maxlength="100">
+      <p class="help">Copy only information printed on your certificate. Leave unknown details blank.</p>
+      <label for="image">Original certificate file</label>
+      <input id="image" type="file" accept="application/pdf,image/jpeg,image/png,image/webp,.pdf,.jpg,.jpeg,.png,.webp" required>
+      <p class="help">PDF, JPG, PNG or WebP, up to 5 MiB. The original file is uploaded unchanged, without compression or conversion.</p>
       <img id="preview" alt="Selected certificate preview" hidden>
       <p id="image-info" class="help"></p>
       <button id="publish" type="submit">Upload & publish</button>

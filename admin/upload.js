@@ -47,7 +47,8 @@ $('forget').addEventListener('click', () => { forget(); $('status').textContent 
 $('remember').addEventListener('change', () => { if (!$('remember').checked) { try {localStorage.removeItem(TOKEN_KEY);} catch {} } });
 $('existing').addEventListener('change', () => {
   const cert = certifications.find(c => c.id === $('existing').value);
-  $('name').value = cert?.name || ''; $('issuer').value = cert?.issuer || 'AWS'; $('date').value = cert?.date || '';
+  $('name').value = cert?.name || ''; $('issuer').value = cert?.issuer || ''; $('date').value = cert?.date || '';
+  for (const key of ['credentialId','credentialUrl','category']) $(key).value = cert?.[key] || '';
 });
 let selection = 0;
 $('image').addEventListener('change', async () => {
@@ -60,24 +61,16 @@ $('image').addEventListener('change', async () => {
     if (file.size > 5*1024*1024 || !file.size) throw new Error('Choose a nonempty image no larger than 5 MiB.');
     const bytes = new Uint8Array(await file.arrayBuffer());
     const mime = imageType(bytes);
-    if (!mime || !/\.(jpe?g|png|webp)$/i.test(file.name)) throw new Error('Only JPG, PNG and WebP images are accepted.');
-    const bitmap = await createImageBitmap(new Blob([bytes],{type:mime}));
-    let blob;
-    try {
-      if (!bitmap.width || !bitmap.height || bitmap.width*bitmap.height > 40000000) throw new Error('Image dimensions are too large. Please choose an image under 40 megapixels.');
-      const scale = Math.min(1,2400/Math.max(bitmap.width,bitmap.height));
-      const canvas = document.createElement('canvas'); canvas.width = Math.round(bitmap.width*scale); canvas.height = Math.round(bitmap.height*scale);
-      canvas.getContext('2d').drawImage(bitmap,0,0,canvas.width,canvas.height);
-      blob = await new Promise(resolve => canvas.toBlob(resolve,'image/webp',.9));
-      if (!blob) throw new Error('Image conversion failed. Try a different image.');
-      if (scale === 1 && blob.size >= file.size) blob = new Blob([bytes],{type:mime});
-    } finally { bitmap.close(); }
-    if (blob.size > 5*1024*1024) throw new Error('Processed image exceeds 5 MiB. Please use a smaller image.');
-    const output = new Uint8Array(await blob.arrayBuffer());
+    const extension = file.name.split('.').pop().toLowerCase();
+    const allowed = {pdf:'application/pdf',jpg:'image/jpeg',jpeg:'image/jpeg',png:'image/png',webp:'image/webp'};
+    if (!mime || allowed[extension] !== mime) throw new Error('Choose a valid PDF, JPG, PNG or WebP with a matching file extension.');
+    if (mime !== 'application/pdf') { const bitmap = await createImageBitmap(new Blob([bytes],{type:mime})); bitmap.close(); }
+    const blob = new Blob([bytes],{type:mime});
+    const output = bytes; // Preserve the exact original file; no re-encoding or compression.
     if (current !== selection) return;
     prepared = {image:output,mime:imageType(output)};
-    previewUrl = URL.createObjectURL(blob); $('preview').src = previewUrl; $('preview').hidden = false;
-    $('image-info').textContent = `Ready: ${(blob.size/1024).toFixed(0)} KiB (${prepared.mime.replace('image/','')}). Check the preview before publishing.`;
+    previewUrl = URL.createObjectURL(blob); if (mime !== 'application/pdf') $('preview').src = previewUrl; $('preview').hidden = mime === 'application/pdf';
+    $('image-info').textContent = `Ready: ${(blob.size/1024).toFixed(0)} KiB (${prepared.mime.replace('image/','')}). Original file preserved. Check its contents before publishing.`;
   } catch (error) { if (current === selection) $('image-info').textContent = error.message || 'Cannot decode this image. Choose a valid JPG, PNG or WebP.'; }
   finally { if (current === selection) $('publish').disabled = busy; }
 });
@@ -88,7 +81,7 @@ async function watchProduction(path, id) {
     if (id !== watchId) return;
     try {
       const response = await fetch('../assets/certifications-data.js?deployment='+Date.now(),{cache:'no-store'});
-      if (response.ok && parseData(await response.text()).some(c => c.image === './'+path)) {
+      if (response.ok && parseData(await response.text()).some(c => c.file === './'+path)) {
         if (id === watchId) $('status').textContent = 'Published to GitHub and verified on this website. Open the production website to view your certificate.';
         return;
       }
@@ -98,12 +91,12 @@ async function watchProduction(path, id) {
 }
 $('upload-form').addEventListener('submit', async event => {
   event.preventDefault(); if (busy) return;
-  if (!prepared) { $('status').textContent = 'Select a valid certificate image and wait for the preview.'; return; }
+  if (!prepared) { $('status').textContent = 'Select a valid certificate file and wait for the preview.'; return; }
   const token = $('token').value.trim(); if (!token) return;
-  const metadata = {id:$('existing').value,name:$('name').value,issuer:$('issuer').value,date:$('date').value};
+  const metadata = {id:$('existing').value,name:$('name').value,issuer:$('issuer').value,date:$('date').value,credentialId:$('credentialId').value,credentialUrl:$('credentialUrl').value,category:$('category').value};
   const payload = {token,metadata,...prepared};
   busy = true; const id = ++watchId;
-  $('result').hidden = true; $('status').textContent = 'Uploading image and certificate details to GitHub…';
+  $('result').hidden = true; $('status').textContent = 'Uploading certificate and certificate details to GitHub…';
   const controls = [...$('upload-form').elements,$('lock')]; controls.forEach(el => el.disabled = true);
   try {
     if ($('remember').checked) localStorage.setItem(TOKEN_KEY,token); else { try { localStorage.removeItem(TOKEN_KEY); } catch {} }
