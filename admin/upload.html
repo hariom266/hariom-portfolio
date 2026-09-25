@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <meta name="referrer" content="no-referrer">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' blob: data:; connect-src 'self' https://api.github.com; object-src 'none'; base-uri 'none'; form-action 'none'">
+  <title>Certificate upload | Hariom Chourasiya</title>
+  <link rel="stylesheet" href="../assets/index-B2ozihqe.css">
+  <link rel="stylesheet" href="./upload.css">
+  <script type="module" src="./upload.js"></script>
+</head>
+<body>
+<main class="admin-wrap">
+  <a href="../#certifications">← Back to portfolio</a>
+  <p class="eyebrow">PORTFOLIO / CERTIFICATES</p>
+  <h1>Upload a certificate</h1>
+  <p>Publish an image and its details to <strong>hariom266/hariom-portfolio</strong> on main. Vercel deploys the commit when Git auto-deployment is connected.</p>
+  <aside class="notice">This is a personal convenience lock, not bank-grade security. The password is checked only in this browser and can be bypassed. Your GitHub token—not this page or password—controls who can publish. Uploaded certificates become public.</aside>
+  <section id="gate" class="admin-panel">
+    <h2 id="gate-title">Unlock this browser</h2>
+    <p id="gate-help"></p>
+    <form id="unlock-form">
+      <label for="password">Browser password</label>
+      <input id="password" type="password" minlength="10" required autocomplete="current-password">
+      <button id="unlock" type="submit">Unlock</button>
+    </form>
+    <p id="gate-message" role="status"></p>
+  </section>
+  <section id="editor" class="admin-panel" hidden>
+    <div class="panel-heading"><h2>Certificate details</h2><button id="lock" type="button" class="secondary">Lock</button></div>
+    <p>Create a fine-grained token for only <strong>hariom-portfolio</strong>, with repository <strong>Contents: Read and write</strong> and a short expiry. Paste it here, never in chat or a source file.</p>
+    <p><a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener noreferrer">Create a GitHub token ↗</a></p>
+    <form id="upload-form">
+      <label for="token">GitHub personal access token</label>
+      <input id="token" type="password" required autocomplete="off" spellcheck="false">
+      <label class="checkbox"><input id="remember" type="checkbox"> Remember token on this private browser (localStorage)</label>
+      <p class="help">Unchecked: held in memory until you lock or close this page. Remembered tokens can be read by scripts on this origin; avoid shared computers.</p>
+      <button id="forget" type="button" class="secondary">Forget saved token</button>
+      <label for="existing">Add or replace</label>
+      <select id="existing"><option value="">Add a new certification</option></select>
+      <p class="help">Existing entries are refreshed from GitHub before publishing. A replacement preserves its position and description.</p>
+      <label for="name">Certification name</label>
+      <input id="name" maxlength="160" required>
+      <div class="fields">
+        <div><label for="issuer">Issuer</label><input id="issuer" value="AWS" maxlength="100" required></div>
+        <div><label for="date">Issue date (optional)</label><input id="date" type="date"></div>
+      </div>
+      <label for="image">Certificate image</label>
+      <input id="image" type="file" accept="image/jpeg,image/png,image/webp,.jpg,.jpeg,.png,.webp" required>
+      <p class="help">JPG, PNG or WebP, up to 5 MiB. Large images are resized to a maximum of 2400 pixels and converted to WebP before upload.</p>
+      <img id="preview" alt="Selected certificate preview" hidden>
+      <p id="image-info" class="help"></p>
+      <button id="publish" type="submit">Upload & publish</button>
+    </form>
+    <p id="status" role="status" aria-live="polite"></p>
+    <div id="result" hidden>
+      <a id="commit-link" target="_blank" rel="noopener noreferrer">View GitHub commit ↗</a>
+      <a href="https://hariom-portfolio-lac.vercel.app/#certifications" target="_blank" rel="noopener noreferrer">View production website ↗</a>
+      <a href="https://vercel.com/hariom-chourasiya-s-projects/hariom-portfolio" target="_blank" rel="noopener noreferrer">Check Vercel deployment ↗</a>
+    </div>
+  </section>
+</main>
+</body>
+</html>

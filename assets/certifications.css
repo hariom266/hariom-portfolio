@@ -14,3 +14,5 @@
 @media(max-width:1000px){#certifications .cert-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:600px){#certifications .cert-grid{grid-template-columns:1fr}.certificate-front,.certificate-back{padding:23px}.certificate-modal-panel{padding:16px}}
 @media(prefers-reduced-motion:reduce){.certificate-inner,.aws-flip-card.is-flipped .certificate-inner,.certificate-front,.certificate-back{transform:none!important}.certificate-front,.certificate-back{transition:opacity .15s ease!important;backface-visibility:visible}.certificate-back{opacity:0;pointer-events:none}.aws-flip-card.is-flipped .certificate-front{opacity:0;pointer-events:none}.aws-flip-card.is-flipped .certificate-back{opacity:1;pointer-events:auto}}
+
+#certifications .aws-flip-card:focus-visible{outline:2px solid var(--accent)}.aws-flip-card:not(.aws) .certificate-front{background:#090d13;border-color:var(--border)}
